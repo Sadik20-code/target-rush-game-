@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07101f">
+<title>Target Rush PRO — Ultimate Legend & Challenge Edition</title>
+<style>
+:root{--bg:#050914;--panel:#0c1426;--line:#233453;--text:#f5f7ff;--muted:#8d9ab5;--cyan:#31e7ff;--violet:#8c6cff;--green:#55e69a;--gold:#ffd45c;--red:#ff5f75;--season:#ff3d71}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#14223f 0,#050914 48%);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif;min-height:100vh;overflow-x:hidden}
+button,input,select{font:inherit}
+button{border:0;cursor:pointer;color:var(--text)}
+.app{max-width:760px;margin:auto;padding:14px 14px 28px;position:relative;z-index:2}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.brand{font-weight:900;letter-spacing:1px}
+.brand small{display:block;color:var(--cyan);font-size:10px;letter-spacing:1px}
+.wallet{display:flex;gap:7px}
+.pill{background:#101b30;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:12px}
+.screen{display:none}
+.screen.active{display:block}
+.hero,.card{background:linear-gradient(145deg,#0d172b,#091121);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 18px 45px #0005}
+.hero{text-align:center;padding:20px 18px}
+.logo{font-size:34px;font-weight:1000;line-height:.95;text-shadow:0 0 25px #31e7ff66}
+.sub{color:var(--cyan);margin:6px 0 14px;font-weight:bold;font-size:12px}
+.btn{min-height:42px;padding:0 14px;border-radius:12px;background:#17243e;border:1px solid var(--line);font-weight:800;transition:all .2s ease}
+.btn.primary{background:linear-gradient(135deg,var(--cyan),var(--violet));color:#07101f}
+.btn.gold{background:linear-gradient(135deg,#ffd45c,#ff9f43);color:#211300;box-shadow:0 0 15px rgba(255,212,92,0.3)}
+.btn.season-btn{background:linear-gradient(135deg,var(--season),var(--violet));color:#fff}
+.btn.danger{background:linear-gradient(135deg,#ff4757,#ff6b81);color:#fff}
+.btn.active{border-color:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.btn:active{transform:scale(.98)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.grid3{grid-template-columns:repeat(3,1fr)}
+.stat{padding:10px;border-radius:15px;background:#0a1427;border:1px solid #1b2b48;text-align:center}
+.stat b{font-size:15px;display:block}
+.stat span{font-size:10px;color:var(--muted)}
+
+.rank-card{background:linear-gradient(135deg,rgba(49,231,255,0.1),rgba(140,108,255,0.1));border:1px solid var(--cyan);padding:12px;border-radius:16px;text-align:center;margin-bottom:12px;cursor:pointer}
+.rank-title{font-size:20px;font-weight:900;color:var(--gold);text-shadow:0 0 10px rgba(255,212,92,0.5)}
+
+.nav{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:12px 0}
+.nav button{background:#0d172a;border:1px solid var(--line);border-radius:12px;padding:10px 2px;font-size:9px;font-weight:bold}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:16px 2px 8px}
+.section-title h3{margin:0}
+.muted{color:var(--muted);font-size:12px}
+
+.filter-bar{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px}
+.filter-bar button{padding:6px 12px;font-size:11px;white-space:nowrap}
+
+.mode-grid,.shop-grid,.power-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.item{background:#0a1427;border:1px solid var(--line);border-radius:16px;padding:12px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+.item h4{margin:0 0 4px;font-size:13px}
+.item p{margin:0 0 8px;color:var(--muted);font-size:11px}
+.progress{height:8px;background:#1a2740;border-radius:99px;overflow:hidden;margin-top:6px;position:relative}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));width:0%;transition:width .3s ease}
+
+/* Badges */
+.badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:9px;font-weight:bold;text-transform:uppercase;margin-bottom:5px;align-self:flex-start}
+.badge.legendary{background:linear-gradient(135deg, #ffd45c, #ff9f43);color:#000;box-shadow:0 0 12px #ffd45caa; animation: pulse 1.5s infinite alternate;}
+.badge.epic{background:linear-gradient(135deg, #a55eea, #8c6cff);color:#fff;box-shadow:0 0 8px #8c6cff88;}
+.badge.rare{background:linear-gradient(135deg, #31e7ff, #00d2d3);color:#000;box-shadow:0 0 6px #31e7ff66;}
+.badge.common{background:#8d9ab5;color:#000;}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+.game-head{display:flex;justify-content:space-between;gap:6px;align-items:center;margin-bottom:8px}
+.game-head .stat{flex:1;padding:6px}
+.game-head .stat b{font-size:13px}
+.arena{height:min(60vh,480px);min-height:340px;position:relative;overflow:hidden;border-radius:24px;border:1px solid #26395e;background:radial-gradient(circle,#152747,#060b16 70%);touch-action:manipulation}
+
+#fxCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}
+
+/* Dynamic Skin Styling for Targets */
+.target{position:absolute;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;user-select:none;touch-action:none;transition:transform .08s;font-size:20px;z-index:3;outline:none}
+.target.common-target{border:2px solid #8d9ab5; box-shadow:0 0 8px #8d9ab566;}
+.target.rare-target{border:2px dashed #31e7ff; box-shadow:0 0 15px #31e7ffaa;}
+.target.epic-target{border:3px solid #8c6cff; box-shadow:0 0 25px #8c6cffdd, inset 0 0 10px #ffffffaa; animation: epicGlow 1.2s infinite alternate;}
+.target.legendary-target{border:3px double #ffd45c; box-shadow:0 0 35px #ffd45c, 0 0 15px #ff3d71; animation: legendGlow 0.8s infinite alternate;}
+
+@keyframes epicGlow {
+  0% { box-shadow: 0 0 15px #8c6cff, inset 0 0 5px #fff; }
+  100% { box-shadow: 0 0 30px #a55eea, inset 0 0 15px #fff; }
+}
+@keyframes legendGlow {
+  0% { transform: scale(1) rotate(0deg); box-shadow: 0 0 20px #ffd45c, 0 0 10px #ff3d71; }
+  100% { transform: scale(1.1) rotate(10deg); box-shadow: 0 0 45px #ffd45c, 0 0 25px #ff3d71; }
+}
+
+.skin-preview-box{display:grid;place-items:center;margin:8px 0;height:55px}
+
+.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#050914bb;backdrop-filter:blur(5px);z-index:10}
+.overlay .card{text-align:center;width:min(92%,360px)}
+
+.wheel-container{text-align:center;position:relative;margin:15px 0}
+.wheel{width:200px;height:200px;border-radius:50%;border:4px solid var(--gold);margin:0 auto;position:relative;transition:transform 3s cubic-bezier(0.1,0.9,0.1,1);background:conic-gradient(#31e7ff 0 60deg,#8c6cff 60deg 120deg,#ff3d71 120deg 180deg,#ffd45c 180deg 240deg,#55e69a 240deg 300deg,#ff7a43 300deg 360deg);box-shadow:0 0 20px #ffd45c66}
+.wheel-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:20px solid #fff;z-index:10}
+
+.rank-road-item,.mission-item,.challenge-item{background:#0a1427;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.rank-road-item.active{border-color:var(--gold);background:linear-gradient(135deg,#0a1427,#17243e)}
+.challenge-item{border-left:4px solid var(--cyan)}
+
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#17243e;border:1px solid var(--line);padding:10px 14px;border-radius:12px;display:none;z-index:30;font-size:12px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{flex:1}
+.input-box{width:100%;padding:10px;border-radius:10px;background:#070d1a;border:1px solid var(--line);color:#fff;margin-bottom:10px}
+
+/* Boss Health Bar Container */
+#powerBar{display:flex;gap:6px;overflow-x:auto;margin-bottom:8px;padding-bottom:2px}
+#powerBar .btn{min-width:82px;font-size:10px;padding:0 8px}
+.power-card{background:#0a1427;border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;justify-content:space-between}
+.power-icon{font-size:32px;text-align:center;margin-bottom:5px}
+#bossContainer{display:none;margin-bottom:8px;background:#0d172b;border:1px solid var(--red);padding:8px 12px;border-radius:12px}
+#bossContainer .boss-header{display:flex;justify-content:space-between;font-size:11px;font-weight:bold;margin-bottom:4px;color:var(--red)}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">S.K SADIKUR<small id="profileDisplayTag">PROFILE: DEFAULT</small></div>
+    <div class="wallet"><span class="pill">🪙 <b id="coins">0</b></span><span class="pill">💎 <b id="gems">0</b></span></div>
+  </header>
+
+  <!-- HOME SCREEN -->
+  <section id="home" class="screen active">
+    <div class="hero">
+      <div class="logo">TARGET<br>RUSH</div>
+      <div class="sub">ULTIMATE LEGEND & CHALLENGE EDITION</div>
+      <div class="row">
+        <button class="btn primary" id="playBtn">▶ PLAY GAME</button>
+        <button class="btn" data-screen="profile">👤 PROFILE</button>
+      </div>
+    </div>
+
+    <!-- Rank Card -->
+    <div class="rank-card" data-screen="rankRoad">
+      <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted); font-weight:bold;">
+        <span>CURRENT RANK</span>
+        <span style="color:var(--season)" id="seasonTimerDisplay">Season Ends in: 7d</span>
+      </div>
+      <div class="rank-title" id="userRank">🥉 Bronze</div>
+      <div style="font-size:11px; color:var(--cyan); margin-top:4px;" id="nextRankPreview">Next Rank in XP...</div>
+    </div>
+
+    <!-- Unlimited Level Progress -->
+    <div class="card" style="margin-bottom:12px;">
+      <div style="display:flex; justify-content:space-between; font-size:12px;">
+        <span>Unlimited Level <b id="level">1</b> Progress</span>
+        <b id="levelMatchesText">0 / 5 Matches</b>
+      </div>
+      <div class="progress"><i id="levelBar" style="width:0%;"></i></div>
+    </div>
+
+    <div class="grid grid3">
+      <div class="stat"><b id="xpDisplay">0</b><span>SEASON XP</span></div>
+      <div class="stat"><b id="best">0</b><span>BEST</span></div>
+      <div class="stat"><b id="streak">0</b><span>STREAK</span></div>
+    </div>
+
+    <div class="section-title"><h3>Game Modes</h3><span class="muted">6 Modes Active</span></div>
+    <div class="mode-grid" id="modeGrid"></div>
+    
+    <div class="nav">
+      <button data-screen="shop">🛍️ Shop</button>
+      <button data-screen="powers">⚡ Powers</button>
+      <button data-screen="challenges">⚔️ Challenge</button>
+      <button data-screen="missions">🎯 Mission</button>
+      <button data-screen="wheel">🎡 Wheel</button>
+      <button data-screen="season">🏆 Season</button>
+      <button data-screen="rankRoad">📊 Rank</button>
+    </div>
+  </section>
+
+  <!-- SHOP SCREEN WITH DISTINCT RARITY EFFECTS -->
+  <section id="shop" class="screen">
+    <div class="section-title"><h2>🛍️ Animal Skin Shop (30 Skins)</h2><button class="btn" data-screen="home">⌂</button></div>
+    <div class="filter-bar">
+      <button class="btn filter-btn active" data-filter="all">All</button>
+      <button class="btn filter-btn" data-filter="my_skins">My Skins 🎒</button>
+      <button class="btn filter-btn" data-filter="common">Common</button>
+      <button class="btn filter-btn" data-filter="rare">Rare</button>
+      <button class="btn filter-btn" data-filter="epic">Epic</button>
+      <button class="btn filter-btn" data-filter="legendary">Legendary 🔥</button>
+    </div>
+    <div class="shop-grid" id="shopGrid"></div>
+  </section>
+
+  <!-- POWER SHOP -->
+  <section id="powers" class="screen">
+    <div class="section-title"><h2>⚡ Power Shop</h2><button class="btn" data-screen="home">⌂</button></div>
+    <div class="card" style="margin-bottom:12px;text-align:center">
+      <b>Buy powers with 🪙 Coins or 💎 Gems</b>
+      <div class="muted" style="margin-top:5px">Each power is stored in your inventory. Use it during a match from the power bar.</div>
+    </div>
+    <div class="power-grid" id="powerGrid"></div>
+  </section>
+
+  <!-- EXPANDED MISSIONS SCREEN (12 MISSIONS) -->
+  <section id="missions" class="screen">
+    <div class="section-title"><h2>🎯 Daily & Weekly Missions</h2><button class="btn" data-screen="home">⌂</button></div>
+    <div id="missionListContainer"></div>
+  </section>
+
+  <!-- FULLY WORKING CHALLENGES SCREEN (8 CHALLENGES WITH Direct PLAY) -->
+  <section id="challenges" class="screen">
+    <div class="section-title"><h2>⚔️ Challenge Mode (Play & Earn)</h2><button class="btn" data-screen="home">⌂</button></div>
+    <div id="challengeList"></div>
+  </section>
+
+  <!-- RANK ROAD SCREEN -->
+  <section id="rankRoad" class="screen">
+    <div class="section-title"><h2>🏆 Rank Road (Legend Tier)</h2><button class="btn" data-screen="home">⌂</button></div>
+    <div class="card" style="margin-bottom:12px; text-align:center;">
+      <span class="muted">Current Season XP</span>
+      <h2 style="color:var(--cyan); margin:4px 0;" id="roadXpText">0 XP</h2>
+      <small style="color:var(--season);">* Ranks reset every 7 days when Season ends</small>
+    </div>
+    <div id="rankRoadList"></div>
+  </section>
+
+  <!-- MULTI-PROFILE MANAGER SCREEN -->
+  <section id="profile" class="screen">
+    <div class="section-title"><h2>👤 Profile Manager</h2><button class="btn" data-screen="home">⌂</button></div>
+    <div class="card">
+      <h3>Active Profile Switcher</h3>
+      <select id="profileSelect" class="input-box"></select>
+      <div class="row">
+        <button class="btn primary" id="switchProfileBtn">Switch Profile</button>
+        <button class="btn danger" id="deleteProfileBtn">Delete</button>
+      </div>
+      <hr style="border-color:var(--line);margin:15px 0;">
+      <h3>Create New Profile</h3>
+      <input type="text" id="newProfileName" class="input-box" placeholder="Enter profile name...">
+      <button class="btn gold" id="createProfileBtn" style="width:100%">+ Create Profile</button>
+    </div>
+  </section>
+
+  <!-- WHEEL SCREEN -->
+  <section id="wheel" class="screen">
+    <div class="section-title"><h2>🎡 Spin & Win</h2><button class="btn" data-screen="home">⌂</button></div>
+    <div class="card" style="text-align:center">
+      <p class="muted">Spin the wheel to get instant rewards!</p>
+      <div class="wheel-container">
+        <div class="wheel-pointer"></div>
+        <div class="wheel" id="wheelCircle"></div>
+      </div>
+      <button class="btn gold" id="spinBtn" style="margin-top:10px">SPIN WHEEL</button>
+      <div class="muted" id="spinCooldownText" style="margin-top:8px">Available now 🎁</div>
+    </div>
+  </section>
+
+  <!-- SEASON PASS SCREEN -->
+  <section id="season" class="screen">
+    <div class="section-title"><h2>🏆 Season Pass</h2><button class="btn" data-screen="home">⌂</button></div>
+    <div class="card" style="text-align:center">
+      <h2 style="color:var(--season);margin:4px 0;" id="seasonPassTitle">SEASON 1 PASS</h2>
+      <p class="muted">Unlock Legendary Tiger & Dragon Sovereign Skins!</p>
+      <div style="background:#070d1a;padding:15px;border-radius:16px;margin:12px 0;border:1px solid var(--line);">
+        <div style="font-size:40px;">🐅 🐉</div>
+        <h3 style="margin:5px 0;color:var(--gold);">Apex Creature Pack</h3>
+        <p class="muted" id="seasonStatus">🔒 Locked</p>
+      </div>
+      <button class="btn season-btn" id="unlockSeasonBtn" style="width:100%">🔓 Unlock Pass (💎 50 Gems)</button>
+    </div>
+  </section>
+
+  <!-- GAME ARENA SCREEN -->
+  <section id="game" class="screen">
+    <!-- Boss HP / XP Display Bar -->
+    <div id="bossContainer">
+      <div class="boss-header">
+        <span id="bossNameTag">👹 BOSS LEVEL 1</span>
+        <span id="bossXpText">HP: 100 / 100 XP</span>
+      </div>
+      <div class="progress"><i id="bossHpBar" style="width:100%; background:linear-gradient(90deg,#ff4757,#ff6b81);"></i></div>
+    </div>
+
+    <div id="powerBar">
+      <button class="btn" data-power-use="freezer">🧊 Freeze <b id="powerCountFreezer">0</b></button>
+      <button class="btn" data-power-use="slow">🐌 Slow <b id="powerCountSlow">0</b></button>
+      <button class="btn" data-power-use="shield">🛡️ Shield <b id="powerCountShield">0</b></button>
+      <button class="btn" data-power-use="double">✖2 Score <b id="powerCountDouble">0</b></button>
+      <button class="btn" data-power-use="time">⏱️ +5s <b id="powerCountTime">0</b></button>
+      <button class="btn" data-power-use="bomb">💥 Bomb <b id="powerCountBomb">0</b></button>
+      <button class="btn" data-power-use="frenzy">🔥 Frenzy <b id="powerCountFrenzy">0</b></button>
+      <button class="btn" data-power-use="life">❤️ +1 Life <b id="powerCountLife">0</b></button>
+    </div>
+
+    <div class="game-head">
+      <div class="stat"><b id="gScore">0</b><span>SCORE</span></div>
+      <div class="stat"><b id="gTime">30</b><span>TIME</span></div>
+      <div class="stat"><b id="gCombo">0x</b><span>COMBO</span></div>
+      <div class="stat"><b id="gLives">❤️❤️❤️</b><span>LIVES</span></div>
+    </div>
+    <div class="row" style="margin-bottom:8px"><button class="btn" id="quitBtn">⌂ Home</button></div>
+    <div class="arena" id="arena">
+      <canvas id="fxCanvas"></canvas>
+      <button class="target" id="target" aria-label="Target"></button>
+      <div id="gameOverlay" class="overlay"><div class="card"><h2 id="overlayTitle">READY?</h2><p class="muted" id="overlayText">Tap target to score points</p><button class="btn primary" id="startBtn">START MATCH</button></div></div>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  "use strict";
+
+  const canvas = document.getElementById("fxCanvas");
+  const ctx = canvas.getContext("2d");
+  let particles = [];
+
+  function resizeCanvas() {
+    const arena = document.getElementById("arena");
+    if(!arena) return;
+    canvas.width = arena.clientWidth;
+    canvas.height = arena.clientHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function createParticles(x, y, isLegendary = false) {
+    const count = isLegendary ? 25 : 12;
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x, y,
+        vx: (Math.random() - 0.5) * (isLegendary ? 12 : 8),
+        vy: (Math.random() - 0.5) * (isLegendary ? 12 : 8),
+        radius: Math.random() * (isLegendary ? 5 : 3) + 2,
+        alpha: 1,
+        color: isLegendary ? (Math.random() > 0.5 ? '#ffd45c' : '#ff3d71') : '#31e7ff'
+      });
+    }
+  }
+
+  function updateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for(let i = particles.length - 1; i >= 0; i--) {
+      let p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.alpha -= 0.04;
+      if (p.alpha <= 0) particles.splice(i, 1);
+      else {
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color || "#31e7ff";
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+    requestAnimationFrame(updateParticles);
+  }
+  updateParticles();
+
+  let currentProfile = localStorage.getItem("SK_CURRENT_PROFILE") || "Default";
+  let profileList = JSON.parse(localStorage.getItem("SK_PROFILE_LIST") || '["Default"]');
+
+  function getProfileKey(p) { return "SK_TARGET_RUSH_DATA_" + p; }
+
+  // Ranks ending with Legend V
+  const rankRoadData = [
+    { name: "🥉 Bronze", reqXp: 0, reward: "Default Rank" },
+    { name: "🥈 Silver", reqXp: 150, reward: "🪙 +200 Coins" },
+    { name: "🥇 Gold", reqXp: 400, reward: "💎 +10 Gems" },
+    { name: "🪙 Platinum", reqXp: 800, reward: "🪙 +500 Coins" },
+    { name: "💎 Diamond", reqXp: 1400, reward: "💎 +30 Gems" },
+    { name: "🔥 Heroic", reqXp: 2200, reward: "🔮 Rare Skin" },
+    { name: "👑 Master", reqXp: 3200, reward: "🔮 Epic Skin" },
+    { name: "🌌 Grandmaster", reqXp: 4500, reward: "💎 +50 Gems" },
+    { name: "⚡ Legend", reqXp: 6000, reward: "🏆 Legend Badge" },
+    { name: "💥 Legend I", reqXp: 8000, reward: "🪙 +1000 Coins" },
+    { name: "⚔️ Legend II", reqXp: 10500, reward: "💎 +100 Gems" },
+    { name: "🌟 Legend III", reqXp: 13500, reward: "🐉 Mythic Avatar" },
+    { name: "👑 Legend IV", reqXp: 17000, reward: "💎 +200 Gems" },
+    { name: "🔥 Legend V", reqXp: 21000, reward: "🏆 Ultimate Crown" }
+  ];
+
+  // 30 Animal & Creature Skins with CLEAR DISTINCTIONS AND MULTIPLIERS
+  const skins = [
+    // 5 Common (+0% Bonus XP)
+    { id: "c1", name: "Neon Orb", icon: "🔵", price: 0, currency: "coins", color: "#31e7ff", bg: "#087f9d", rarity: "common", desc: "Basic Skin • Standard FX" },
+    { id: "c2", name: "Cute Penguin", icon: "🐧", price: 100, currency: "coins", color: "#8d9ab5", bg: "#2c3a4e", rarity: "common", desc: "Basic Skin • Standard FX" },
+    { id: "c3", name: "Bronze Turtle", icon: "🐢", price: 150, currency: "coins", color: "#cd7f32", bg: "#5a3816", rarity: "common", desc: "Basic Skin • Standard FX" },
+    { id: "c4", name: "Slate Owl", icon: "🦉", price: 200, currency: "coins", color: "#708090", bg: "#2f4f4f", rarity: "common", desc: "Basic Skin • Standard FX" },
+    { id: "c5", name: "Forest Rabbit", icon: "🐇", price: 250, currency: "coins", color: "#8b4513", bg: "#3e1e07", rarity: "common", desc: "Basic Skin • Standard FX" },
+
+    // 5 Rare (+20% Bonus XP & Dashed Cyan Aura)
+    { id: "r1", name: "Fire Fox", icon: "🦊", price: 400, currency: "coins", color: "#ff7a43", bg: "#9b1d12", rarity: "rare", desc: "⚡ +20% Bonus XP • Cyan Glow" },
+    { id: "r2", name: "Cyber Shark", icon: "🦈", price: 600, currency: "coins", color: "#00d2d3", bg: "#01a3a4", rarity: "rare", desc: "⚡ +20% Bonus XP • Cyan Glow" },
+    { id: "r3", name: "Emerald Snake", icon: "🐍", price: 800, currency: "coins", color: "#10ac84", bg: "#1dd1a1", rarity: "rare", desc: "⚡ +20% Bonus XP • Cyan Glow" },
+    { id: "r4", name: "Golden Eagle", icon: "🦅", price: 1000, currency: "coins", color: "#ff9f43", bg: "#ee5253", rarity: "rare", desc: "⚡ +20% Bonus XP • Cyan Glow" },
+    { id: "r5", name: "Obsidian Wolf", icon: "🐺", price: 1200, currency: "coins", color: "#576574", bg: "#222f3e", rarity: "rare", desc: "⚡ +20% Bonus XP • Cyan Glow" },
+
+    // 10 Epic (+50% Bonus XP & Pulsing Purple Aura)
+    { id: "e1", name: "Frost Bear", icon: "🐻‍❄️", price: 30, currency: "gems", color: "#7eeaff", bg: "#1b62b7", rarity: "epic", desc: "🔥 +50% Bonus XP • Pulsing Purple FX" },
+    { id: "e2", name: "Aether Panther", icon: "🐆", price: 40, currency: "gems", color: "#e056fd", bg: "#4834d4", rarity: "epic", desc: "🔥 +50% Bonus XP • Pulsing Purple FX" },
+    { id: "e3", name: "Thunder Rhino", icon: "🦏", price: 50, currency: "gems", color: "#f39c12", bg: "#d35400", rarity: "epic", desc: "🔥 +50% Bonus XP • Pulsing Purple FX" },
+    { id: "e4", name: "Plasma Cobra", icon: "🐍", price: 60, currency: "gems", color: "#9b59b6", bg: "#8e44ad", rarity: "epic", desc: "🔥 +50% Bonus XP • Pulsing Purple FX" },
+    { id: "e5", name: "Cosmic Mammoth", icon: "🦣", price: 70, currency: "gems", color: "#e74c3c", bg: "#c0392b", rarity: "epic", desc: "🔥 +50% Bonus XP • Pulsing Purple FX" },
+    { id: "e6", name: "Spectral Falcon", icon: "🦅", price: 80, currency: "gems", color: "#1abc9c", bg: "#16a085", rarity: "epic", desc: "🔥 +50% Bonus XP • Pulsing Purple FX" },
+    { id: "e7", name: "Shadow Gorilla", icon: "🦍", price: 90, currency: "gems", color: "#34495e", bg: "#2c3e50", rarity: "epic", desc: "🔥 +50% Bonus XP • Pulsing Purple FX" },
+    { id: "e8", name: "Nebula Flamingo", icon: "🦩", price: 100, currency: "gems", color: "#fd79a8", bg: "#e84393", rarity: "epic", desc: "🔥 +50% Bonus XP • Pulsing Purple FX" },
+    { id: "e9", name: "Vapor Cheetah", icon: "🐆", price: 110, currency: "gems", color: "#fed330", bg: "#f7b731", rarity: "epic", desc: "🔥 +50% Bonus XP • Pulsing Purple FX" },
+    { id: "e10", name: "Quantum Whale", icon: "🐳", price: 120, currency: "gems", color: "#45aaf2", bg: "#2d98da", rarity: "epic", desc: "🔥 +50% Bonus XP • Pulsing Purple FX" },
+
+    // 10 Legendary (+100% XP & Double Golden Flame Effect)
+    { id: "l1", name: "Apex Tiger", icon: "🐅", price: 0, currency: "season", color: "#ff3d71", bg: "#800a2a", rarity: "legendary", desc: "👑 +100% XP • Gold Flame & Particles" },
+    { id: "l2", name: "Golden Lion", icon: "🦁", price: 150, currency: "gems", color: "#ffd45c", bg: "#ee5253", rarity: "legendary", desc: "👑 +100% XP • Gold Flame & Particles" },
+    { id: "l3", name: "Rex Dinosaur", icon: "🦖", price: 200, currency: "gems", color: "#00d2d3", bg: "#54a0ff", rarity: "legendary", desc: "👑 +100% XP • Gold Flame & Particles" },
+    { id: "l4", name: "Dragon Sovereign", icon: "🐉", price: 250, currency: "gems", color: "#5f27cd", bg: "#341f97", rarity: "legendary", desc: "👑 +100% XP • Gold Flame & Particles" },
+    { id: "l5", name: "Shadow Phoenix", icon: "🦅", price: 300, currency: "gems", color: "#ff9ff3", bg: "#f368e0", rarity: "legendary", desc: "👑 +100% XP • Gold Flame & Particles" },
+    { id: "l6", name: "Titan Mammoth", icon: "🦣", price: 350, currency: "gems", color: "#ffda79", bg: "#cc8e35", rarity: "legendary", desc: "👑 +100% XP • Gold Flame & Particles" },
+    { id: "l7", name: "Mythic Griffin", icon: "🦅", price: 400, currency: "gems", color: "#ff5252", bg: "#b2bec3", rarity: "legendary", desc: "👑 +100% XP • Gold Flame & Particles" },
+    { id: "l8", name: "Kraken Lord", icon: "🐙", price: 450, currency: "gems", color: "#222f3e", bg: "#10ac84", rarity: "legendary", desc: "👑 +100% XP • Gold Flame & Particles" },
+    { id: "l9", name: "Divine Pegasus", icon: "🦄", price: 500, currency: "gems", color: "#ffffff", bg: "#ffd45c", rarity: "legendary", desc: "👑 +100% XP • Gold Flame & Particles" },
+    { id: "l10", name: "Immortal Hydra", icon: "🐉", price: 600, currency: "gems", color: "#ff3838", bg: "#ff9f1a", rarity: "legendary", desc: "👑 +100% XP • Gold Flame & Particles" }
+  ];
+
+  // EXPANDED MISSIONS LIST (12 Missions)
+  const missions = [
+    { id: "m1", title: "Play 3 Matches", req: 3, reward: "🪙 100 Coins", type: "games" },
+    { id: "m2", title: "Reach 50 High Score", req: 50, reward: "💎 10 Gems", type: "score" },
+    { id: "m3", title: "Play 10 Matches", req: 10, reward: "🪙 300 Coins", type: "games" },
+    { id: "m4", title: "Achieve 15x Combo", req: 15, reward: "💎 15 Gems", type: "combo" },
+    { id: "m5", title: "Score 100 Points Total", req: 100, reward: "🪙 400 Coins", type: "total_score" },
+    { id: "m6", title: "Defeat 1 Boss", req: 1, reward: "💎 20 Gems", type: "boss_defeat" },
+    { id: "m7", title: "Play 20 Matches", req: 20, reward: "🪙 600 Coins", type: "games" },
+    { id: "m8", title: "Reach 25x Combo", req: 25, reward: "💎 25 Gems", type: "combo" },
+    { id: "m9", title: "Reach Unlimited Level 3", req: 3, reward: "🪙 500 Coins", type: "level_reach" },
+    { id: "m10", title: "Earn 1000 Season XP", req: 1000, reward: "💎 40 Gems", type: "xp_earn" },
+    { id: "m11", title: "Defeat 3 Bosses", req: 3, reward: "🪙 1000 Coins", type: "boss_defeat" },
+    { id: "m12", title: "Reach 100 Score in 1 Game", req: 100, reward: "💎 50 Gems", type: "score" }
+  ];
+
+  // FULL WORKING CHALLENGE MODE DATA (8 Challenges with Direct Play Trigger)
+  const challenges = [
+    { id: "ch1", title: "Classic Sprint", desc: "Score 40 in Classic Mode", mode: "classic", targetScore: 40, reward: "🪙 250 Coins" },
+    { id: "ch2", title: "Combo Master", desc: "Achieve 12x Combo", mode: "classic", targetCombo: 12, reward: "💎 15 Gems" },
+    { id: "ch3", title: "Time Attack Trial", desc: "Score 70 in Time Attack", mode: "time", targetScore: 70, reward: "🪙 400 Coins" },
+    { id: "ch4", title: "Boss Slayer I", desc: "Defeat Boss Level 1", mode: "boss", targetBoss: 1, reward: "💎 25 Gems" },
+    { id: "ch5", title: "Precision Sniper", desc: "Score 30 in Precision Mode", mode: "precision", targetScore: 30, reward: "🪙 500 Coins" },
+    { id: "ch6", title: "Hardcore Survivor", desc: "Score 35 in Hardcore Mode", mode: "hardcore", targetScore: 35, reward: "💎 35 Gems" },
+    { id: "ch7", title: "Speed Demon", desc: "Score 50 in Speed Run", mode: "speed", targetScore: 50, reward: "🪙 600 Coins" },
+    { id: "ch8", title: "Boss Slayer II", desc: "Defeat Boss Level 3", mode: "boss", targetBoss: 3, reward: "💎 60 Gems" }
+  ];
+
+  const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+
+  const defaults = {
+    coins: 500, gems: 50, best: 0, level: 1, matchesInCurrentLevel: 0,
+    xp: 0, games: 0, maxCombo: 0, streak: 0, equipped: "c1", owned: ["c1"],
+    totalScoreAccumulated: 0,
+    bossesDefeated: 0,
+    seasonPass: false,
+    seasonNumber: 1,
+    seasonStartTime: Date.now(),
+    bossLevel: 1,
+    completedMissions: [],
+    completedChallenges: [],
+    lastWheelSpinTime: 0,
+    powers: { freezer: 0, slow: 0, shield: 0, double: 0, time: 0, bomb: 0, frenzy: 0, life: 0 }
+  };
+
+  let data = loadData();
+  checkAndResetSeason();
+
+  let currentShopFilter = "all";
+  let activeChallenge = null;
+  const CHALLENGE_ENTRY_FEE = 10;
+  const WHEEL_COOLDOWN_MS = 2 * 60 * 60 * 1000;
+  const powers = [
+    { id:"freezer", icon:"🧊", name:"Freezer", desc:"Stops the game timer for 5 seconds.", price:120, currency:"coins" },
+    { id:"slow", icon:"🐌", name:"Slow Motion", desc:"Target changes position every 2 seconds for 10 seconds.", price:15, currency:"gems" },
+    { id:"shield", icon:"🛡️", name:"Shield", desc:"Blocks your next wrong tap/miss.", price:180, currency:"coins" },
+    { id:"double", icon:"✖️2", name:"Double Score", desc:"Doubles score from hits for 10 seconds.", price:25, currency:"gems" },
+    { id:"time", icon:"⏱️", name:"Time Boost", desc:"Adds 5 seconds to the current match.", price:150, currency:"coins" },
+    { id:"bomb", icon:"💥", name:"Target Bomb", desc:"Instantly gives +10 score and moves the target.", price:20, currency:"gems" },
+    { id:"frenzy", icon:"🔥", name:"Frenzy", desc:"Target moves every 0.5 seconds for 5 seconds.", price:300, currency:"coins" },
+    { id:"life", icon:"❤️", name:"Extra Life", desc:"Adds 1 life instantly during a match.", price:12, currency:"gems" }
+  ];
+
+  function loadData() {
+    try {
+      const saved = localStorage.getItem(getProfileKey(currentProfile));
+      return Object.assign({}, defaults, JSON.parse(saved || "{}"));
+    } catch (e) {
+      return { ...defaults };
+    }
+  }
+
+  function checkAndResetSeason() {
+    const now = Date.now();
+    if (now - data.seasonStartTime >= SEVEN_DAYS_MS) {
+      data.seasonNumber += 1;
+      data.xp = 0; // Rank reset to 0
+      data.seasonStartTime = now;
+      saveData();
+      toast(`🎉 NEW SEASON ${data.seasonNumber} STARTED! Rank XP reset to 0.`);
+    }
+  }
+
+  function saveData() {
+    localStorage.setItem(getProfileKey(currentProfile), JSON.stringify(data));
+    localStorage.setItem("SK_CURRENT_PROFILE", currentProfile);
+    localStorage.setItem("SK_PROFILE_LIST", JSON.stringify(profileList));
+    renderAll();
+  }
+
+  const $ = id => document.getElementById(id);
+
+  function toast(t) {
+    $("toast").textContent = t;
+    $("toast").style.display = "block";
+    clearTimeout(toast.t);
+    toast.t = setTimeout(() => $("toast").style.display = "none", 2200);
+  }
+
+  function show(id) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    $(id).classList.add("active");
+  }
+
+  function getRequiredMatchesForLevel(lvl) {
+    return Math.min(100, lvl * 5);
+  }
+
+  function getCurrentRank(xp) {
+    let current = rankRoadData[0];
+    for (let r of rankRoadData) {
+      if (xp >= r.reqXp) current = r;
+    }
+    return current;
+  }
+
+  function getNextRank(xp) {
+    for (let r of rankRoadData) {
+      if (xp < r.reqXp) return r;
+    }
+    return null;
+  }
+
+  function updateSeasonTimer() {
+    const now = Date.now();
+    const elapsed = now - data.seasonStartTime;
+    const remaining = Math.max(0, SEVEN_DAYS_MS - elapsed);
+    const days = Math.floor(remaining / (24 * 3600 * 1000));
+    const hours = Math.floor((remaining % (24 * 3600 * 1000)) / (3600 * 1000));
+    $("seasonTimerDisplay").textContent = `Season ${data.seasonNumber} Ends: ${days}d ${hours}h`;
+    $("seasonPassTitle").textContent = `SEASON ${data.seasonNumber} PASS`;
+  }
+
+  function renderProfileManager() {
+    $("profileDisplayTag").textContent = "PROFILE: " + currentProfile.toUpperCase();
+    $("profileSelect").innerHTML = profileList.map(p => `<option value="${p}" ${p === currentProfile ? "selected" : ""}>${p}</option>`).join("");
+  }
+
+  function renderRankRoad() {
+    $("roadXpText").textContent = `${data.xp} XP`;
+    let html = "";
+    rankRoadData.forEach(r => {
+      let isUnlocked = data.xp >= r.reqXp;
+      html += `
+        <div class="rank-road-item ${isUnlocked ? 'active' : ''}">
+          <div>
+            <b style="font-size:15px; color:${isUnlocked ? 'var(--gold)' : 'var(--muted)'}">${r.name}</b>
+            <div class="muted">Req: ${r.reqXp} XP</div>
+          </div>
+          <div style="text-align:right">
+            <span class="muted">${r.reward}</span>
+            <div style="font-weight:bold; color:${isUnlocked ? 'var(--green)' : 'var(--red)'}">
+              ${isUnlocked ? '✓ Unlocked' : '🔒 Locked'}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    $("rankRoadList").innerHTML = html;
+  }
+
+  function renderMissions() {
+    $("missionListContainer").innerHTML = missions.map(m => {
+      const isClaimed = data.completedMissions.includes(m.id);
+      let progress = 0;
+      if (m.type === "games") progress = data.games;
+      else if (m.type === "score") progress = data.best;
+      else if (m.type === "combo") progress = data.maxCombo || 0;
+      else if (m.type === "total_score") progress = data.totalScoreAccumulated || 0;
+      else if (m.type === "boss_defeat") progress = data.bossesDefeated || 0;
+      else if (m.type === "level_reach") progress = data.level;
+      else if (m.type === "xp_earn") progress = data.xp;
+
+      const canClaim = !isClaimed && progress >= m.req;
+
+      return `
+        <div class="mission-item">
+          <div>
+            <b>${m.title}</b>
+            <div class="muted">Progress: ${Math.min(progress, m.req)} / ${m.req} • Reward: ${m.reward}</div>
+          </div>
+          <button class="btn ${isClaimed ? '' : canClaim ? 'gold' : ''}" id="claim_m_${m.id}" ${!canClaim || isClaimed ? 'disabled' : ''}>
+            ${isClaimed ? 'Claimed' : canClaim ? 'Claim' : 'Locked'}
+          </button>
+        </div>
+      `;
+    }).join("");
+
+    missions.forEach(m => {
+      const btn = $("claim_m_" + m.id);
+      if (btn && !data.completedMissions.includes(m.id)) {
+        btn.onclick = () => {
+          data.completedMissions.push(m.id);
+          if (m.reward.includes("Coins")) data.coins += parseInt(m.reward.replace(/\D/g, ''));
+          if (m.reward.includes("Gems")) data.gems += parseInt(m.reward.replace(/\D/g, ''));
+          saveData();
+          toast(`Claimed ${m.reward}!`);
+        };
+      }
+    });
+  }
+
+  function renderChallenges() {
+    $("challengeList").innerHTML = challenges.map(ch => {
+      const isCompleted = data.completedChallenges.includes(ch.id);
+      return `
+        <div class="challenge-item">
+          <div>
+            <b>${ch.title}</b>
+            <div class="muted">${ch.desc} • Entry: 💎 ${CHALLENGE_ENTRY_FEE} • Reward: ${ch.reward}</div>
+          </div>
+          <button class="btn ${isCompleted ? '' : 'primary'}" id="start_ch_${ch.id}" ${isCompleted ? 'disabled' : ''}>
+            ${isCompleted ? '✓ Completed' : `⚔️ Start Challenge (💎 ${CHALLENGE_ENTRY_FEE})`}
+          </button>
+        </div>
+      `;
+    }).join("");
+
+    challenges.forEach(ch => {
+      const btn = $("start_ch_" + ch.id);
+      if (btn) {
+        btn.onclick = () => {
+          if (data.gems < CHALLENGE_ENTRY_FEE) {
+            toast(`💎 Need ${CHALLENGE_ENTRY_FEE} Gems to enter this challenge!`);
+            return;
+          }
+          data.gems -= CHALLENGE_ENTRY_FEE;
+          saveData();
+          activeChallenge = ch;
+          mode = ch.mode;
+          show("game");
+          $("overlayTitle").textContent = "CHALLENGE: " + ch.title.toUpperCase();
+          $("overlayText").innerHTML = `${ch.desc}<br><b>Entry Fee: 💎 ${CHALLENGE_ENTRY_FEE}</b>`;
+          $("startBtn").textContent = "START CHALLENGE";
+          $("gameOverlay").style.display = "grid";
+        };
+      }
+    });
+  }
+
+  function renderPowers() {
+    const inv = data.powers || (data.powers = {});
+    $("powerGrid").innerHTML = powers.map(p => {
+      const count = inv[p.id] || 0;
+      return `<div class="power-card">
+        <div class="power-icon">${p.icon}</div>
+        <h4 style="margin:0 0 4px;text-align:center">${p.name}</h4>
+        <p style="font-size:11px;color:var(--muted);text-align:center;min-height:34px">${p.desc}</p>
+        <div class="muted" style="text-align:center;margin-bottom:8px">Owned: <b>${count}</b></div>
+        <button class="btn primary" data-buy-power="${p.id}">Buy ${p.price} ${p.currency === 'coins' ? '🪙' : '💎'}</button>
+      </div>`;
+    }).join("");
+  }
+
+  function renderShop() {
+    let filtered = skins;
+    if (currentShopFilter === "my_skins") {
+      filtered = skins.filter(s => data.owned.includes(s.id));
+    } else if (currentShopFilter !== "all") {
+      filtered = skins.filter(s => s.rarity === currentShopFilter);
+    }
+
+    if(filtered.length === 0) {
+      $("shopGrid").innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;" class="muted">No skins found in this category.</div>`;
+      return;
+    }
+
+    $("shopGrid").innerHTML = filtered.map(s => {
+      const own = data.owned.includes(s.id), eq = data.equipped === s.id;
+      return `<div class="item" style="text-align:center;">
+        <span class="badge ${s.rarity}">${s.rarity}</span>
+        <div class="skin-preview-box">
+          <div class="target ${s.rarity}-target" style="position:relative; position:static; transform:scale(0.9); color:${s.color}; background:radial-gradient(circle,#fff,${s.color} 35%,${s.bg});">${s.icon || '🎯'}</div>
+        </div>
+        <h4>${s.name}</h4>
+        <p style="font-size:10px; color:var(--cyan); margin-bottom:4px;">${s.desc}</p>
+        <p>${own ? 'Unlocked' : s.price + ' ' + s.currency}</p>
+        <button class="btn ${eq ? 'primary' : ''}" data-skin="${s.id}">${eq ? 'Equipped' : own ? 'Equip' : 'Buy'}</button>
+      </div>`;
+    }).join("");
+  }
+
+  function renderAll() {
+    updateSeasonTimer();
+    $("coins").textContent = data.coins;
+    $("gems").textContent = data.gems;
+    $("level").textContent = data.level;
+    $("best").textContent = data.best;
+    $("streak").textContent = data.streak;
+    $("xpDisplay").textContent = data.xp;
+
+    let curRank = getCurrentRank(data.xp);
+    let nextRank = getNextRank(data.xp);
+    $("userRank").textContent = curRank.name;
+
+    if (nextRank) {
+      let diff = nextRank.reqXp - data.xp;
+      $("nextRankPreview").textContent = `Next: ${nextRank.name} in ${diff} XP`;
+    } else {
+      $("nextRankPreview").textContent = `MAX LEGEND V RANK REACHED!`;
+    }
+
+    let req = getRequiredMatchesForLevel(data.level);
+    $("levelMatchesText").textContent = `${data.matchesInCurrentLevel} / ${req} Matches`;
+    $("levelBar").style.width = `${Math.min(100, (data.matchesInCurrentLevel / req) * 100)}%`;
+
+    if(data.seasonPass) {
+      $("seasonStatus").textContent = "🔓 UNLOCKED";
+      $("seasonStatus").style.color = "var(--green)";
+    }
+
+    renderModes();
+    renderRankRoad();
+    renderProfileManager();
+    renderMissions();
+    renderChallenges();
+    renderShop();
+    renderPowers();
+    renderPowerBar();
+    updateWheelCooldown();
+  }
+
+  function renderModes() {
+    const modes = [
+      { id: "classic", name: "Classic 🎯", desc: "30 sec • 3 lives" },
+      { id: "time", name: "Time Attack ⚡", desc: "60 sec • 3 lives" },
+      { id: "boss", name: "Boss Fight 👹", desc: "HP/XP Scaling Boss" },
+      { id: "hardcore", name: "Hardcore 💀", desc: "1 Miss = Over" },
+      { id: "speed", name: "Speed Run 🚀", desc: "Fast Targets" },
+      { id: "precision", name: "Precision 🎯", desc: "Small Target" }
+    ];
+    $("modeGrid").innerHTML = modes.map(m => `
+      <div class="item">
+        <h4>${m.name}</h4>
+        <p>${m.desc}</p>
+        <button class="btn ${mode === m.id ? "primary" : ""}" data-mode="${m.id}">${mode === m.id ? "Selected" : "Select"}</button>
+      </div>
+    `).join("");
+  }
+
+  let mode = "classic", running = false, score = 0, timeLeft = 30, lives = 3, combo = 0, timer = null, curRotation = 0;
+  let freezeUntil = 0, slowUntil = 0, frenzyUntil = 0, doubleUntil = 0, slowTimer = null, frenzyTimer = null, shieldActive = false, powerTimeTimer = null;
+  let bossMaxHp = 100, bossCurrentHp = 100;
+
+  function applySkinToTarget(targetElem, skinId) {
+    const skin = skins.find(s => s.id === skinId) || skins[0];
+    targetElem.className = `target ${skin.rarity}-target`;
+    targetElem.style.color = skin.color;
+    targetElem.style.background = `radial-gradient(circle, #fff, ${skin.color} 35%, ${skin.bg})`;
+    targetElem.textContent = skin.icon || "🎯";
+  }
+
+  function moveTarget() {
+    const a = $("arena"), t = $("target");
+    // Button small target sizing (36px for precision, 42px for normal)
+    const sz = mode === 'precision' ? 36 : 42;
+    const maxX = Math.max(5, a.clientWidth - (sz + 10));
+    const maxY = Math.max(5, a.clientHeight - (sz + 10));
+    t.style.width = sz + 'px';
+    t.style.height = sz + 'px';
+    applySkinToTarget(t, data.equipped);
+
+    t.style.left = Math.floor(Math.random() * maxX) + "px";
+    t.style.top = Math.floor(Math.random() * maxY) + "px";
+  }
+
+  function updateBossHUD() {
+    if (mode === 'boss') {
+      $("bossContainer").style.display = "block";
+      $("bossNameTag").textContent = `👹 BOSS LEVEL ${data.bossLevel}`;
+      $("bossXpText").textContent = `HP: ${bossCurrentHp} / ${bossMaxHp}`;
+      let pct = Math.max(0, (bossCurrentHp / bossMaxHp) * 100);
+      $("bossHpBar").style.width = pct + "%";
+    } else {
+      $("bossContainer").style.display = "none";
+    }
+  }
+
+  function hit() {
+    if (!running) return;
+    const hitScore = Date.now() < doubleUntil ? 4 : 2;
+    score += hitScore;
+    data.totalScoreAccumulated = (data.totalScoreAccumulated || 0) + hitScore;
+    combo++;
+    data.maxCombo = Math.max(data.maxCombo || 0, combo);
+
+    // Skin Rarity Multipliers for XP
+    const skin = skins.find(s => s.id === data.equipped) || skins[0];
+    let xpGain = 5;
+    if (skin.rarity === 'rare') xpGain = 6;
+    if (skin.rarity === 'epic') xpGain = 8;
+    if (skin.rarity === 'legendary') xpGain = 10;
+    data.xp += xpGain;
+
+    if (mode === 'boss') {
+      bossCurrentHp -= 10;
+      updateBossHUD();
+      if (bossCurrentHp <= 0) {
+        data.bossLevel++;
+        data.bossesDefeated = (data.bossesDefeated || 0) + 1;
+        toast(`👹 BOSS DEFEATED! Boss Level Up to Lvl ${data.bossLevel}!`);
+        finish(true);
+        return;
+      }
+    }
+
+    const r = $("target").getBoundingClientRect(), ar = $("arena").getBoundingClientRect();
+    createParticles(r.left - ar.left + 20, r.top - ar.top + 20, skin.rarity === 'legendary');
+    if (Date.now() >= slowUntil) moveTarget();
+    renderGameHUD();
+  }
+
+  function wrongHit() {
+    if (!running) return;
+    if (shieldActive) {
+      shieldActive = false;
+      toast("🛡️ Shield blocked the miss!");
+      renderGameHUD();
+      return;
+    }
+    if(mode === 'hardcore') lives = 0; else lives--;
+    combo = 0;
+    renderGameHUD();
+    if (lives <= 0) finish(false);
+  }
+
+  function renderGameHUD() {
+    $("gScore").textContent = score;
+    $("gTime").textContent = Math.max(0, Math.ceil(timeLeft));
+    $("gCombo").textContent = combo + "x";
+    $("gLives").textContent = "❤️".repeat(Math.max(0, lives)) || "💀";
+  }
+
+  function start() {
+    running = true;
+    score = 0;
+    combo = 0;
+    timeLeft = mode === 'time' ? 60 : 30;
+    lives = 3;
+    freezeUntil = 0; slowUntil = 0; frenzyUntil = 0; doubleUntil = 0; shieldActive = false;
+    clearInterval(slowTimer); clearInterval(frenzyTimer);
+
+    if (mode === 'boss') {
+      bossMaxHp = 100 + (data.bossLevel * 50); // Boss HP/XP increases every level
+      bossCurrentHp = bossMaxHp;
+      updateBossHUD();
+    } else {
+      $("bossContainer").style.display = "none";
+    }
+
+    $("gameOverlay").style.display = "none";
+    resizeCanvas();
+    moveTarget();
+
+    clearInterval(timer);
+    timer = setInterval(() => {
+      if (Date.now() >= freezeUntil) timeLeft -= 0.1;
+      if (timeLeft <= 0) finish(mode === 'boss' ? false : true);
+      renderGameHUD();
+    }, 100);
+  }
+
+  function finish(isWin = false) {
+    running = false;
+    clearInterval(timer);
+    clearInterval(slowTimer);
+    clearInterval(frenzyTimer);
+    data.games++;
+    data.matchesInCurrentLevel++;
+
+    let req = getRequiredMatchesForLevel(data.level);
+    if (data.matchesInCurrentLevel >= req) {
+      data.level++;
+      data.matchesInCurrentLevel = 0;
+      data.gems += 20;
+      data.coins += 200;
+      toast(`🎉 LEVEL UP! Reached Unlimited Level ${data.level}! (+20 Gems, +200 Coins)`);
+    }
+
+    data.best = Math.max(data.best, score);
+
+    // Award the match XP shown on the result screen.
+    const matchXp = score * 2;
+    data.xp += matchXp;
+
+    // Check Active Challenge Completion
+    if (activeChallenge && !data.completedChallenges.includes(activeChallenge.id)) {
+      let challengeSuccess = false;
+      if (activeChallenge.targetScore && score >= activeChallenge.targetScore) challengeSuccess = true;
+      if (activeChallenge.targetCombo && (data.maxCombo || 0) >= activeChallenge.targetCombo) challengeSuccess = true;
+      if (activeChallenge.targetBoss && data.bossLevel > activeChallenge.targetBoss) challengeSuccess = true;
+
+      if (challengeSuccess) {
+        data.completedChallenges.push(activeChallenge.id);
+        if (activeChallenge.reward.includes("Coins")) data.coins += parseInt(activeChallenge.reward.replace(/\D/g, ''));
+        if (activeChallenge.reward.includes("Gems")) data.gems += parseInt(activeChallenge.reward.replace(/\D/g, ''));
+        toast(`⚔️ CHALLENGE COMPLETED! Reward: ${activeChallenge.reward}`);
+      }
+    }
+    activeChallenge = null;
+
+    saveData();
+
+    $("overlayTitle").textContent = isWin ? "VICTORY!" : "GAME OVER";
+    $("overlayText").innerHTML = `Score: <b>${score}</b><br>Season XP Earned: +${score * 2}`;
+    $("startBtn").textContent = "PLAY AGAIN";
+    $("gameOverlay").style.display = "grid";
+  }
+
+  function renderPowerBar() {
+    const inv = data.powers || {};
+    powers.forEach(p => {
+      const el = $("powerCount" + p.id.charAt(0).toUpperCase() + p.id.slice(1));
+      if (el) el.textContent = inv[p.id] || 0;
+    });
+  }
+
+  function usePower(id) {
+    if (!running) { toast("▶ Start a match first!"); return; }
+    data.powers = data.powers || {};
+    if ((data.powers[id] || 0) <= 0) { toast("⚡ You don't own this power!"); return; }
+    data.powers[id]--;
+    if (id === "freezer") {
+      freezeUntil = Math.max(freezeUntil, Date.now()) + 5000;
+      toast("🧊 Timer frozen for 5 seconds!");
+    } else if (id === "slow") {
+      slowUntil = Math.max(slowUntil, Date.now()) + 10000;
+      clearInterval(slowTimer);
+      slowTimer = setInterval(() => { if (running && Date.now() < slowUntil) moveTarget(); else clearInterval(slowTimer); }, 2000);
+      toast("🐌 Slow Motion: target changes every 2 seconds!");
+    } else if (id === "shield") {
+      shieldActive = true;
+      toast("🛡️ Shield ready — next miss is blocked!");
+    } else if (id === "double") {
+      doubleUntil = Math.max(doubleUntil, Date.now()) + 10000;
+      toast("✖️2 Double Score active for 10 seconds!");
+    } else if (id === "time") {
+      timeLeft += 5;
+      toast("⏱️ +5 seconds added!");
+    } else if (id === "bomb") {
+      score += 10;
+      data.totalScoreAccumulated = (data.totalScoreAccumulated || 0) + 10;
+      moveTarget();
+      toast("💥 Target Bomb! +10 score!");
+    } else if (id === "frenzy") {
+      frenzyUntil = Math.max(frenzyUntil, Date.now()) + 5000;
+      clearInterval(frenzyTimer);
+      frenzyTimer = setInterval(() => { if (running && Date.now() < frenzyUntil) moveTarget(); else clearInterval(frenzyTimer); }, 500);
+      toast("🔥 Frenzy active for 5 seconds!");
+    } else if (id === "life") {
+      lives++;
+      renderGameHUD();
+      toast("❤️ +1 Life!");
+    }
+    saveData();
+  }
+
+  // Profile Event Handlers
+  $("createProfileBtn").onclick = () => {
+    const val = $("newProfileName").value.trim();
+    if (val && !profileList.includes(val)) {
+      profileList.push(val);
+      currentProfile = val;
+      data = loadData();
+      saveData();
+      $("newProfileName").value = "";
+      toast("Profile Created!");
+    }
+  };
+
+  $("switchProfileBtn").onclick = () => {
+    const val = $("profileSelect").value;
+    if (val) {
+      currentProfile = val;
+      data = loadData();
+      saveData();
+      toast("Profile Switched!");
+    }
+  };
+
+  $("deleteProfileBtn").onclick = () => {
+    if (profileList.length > 1) {
+      profileList = profileList.filter(p => p !== currentProfile);
+      localStorage.removeItem(getProfileKey(currentProfile));
+      currentProfile = profileList[0];
+      data = loadData();
+      saveData();
+      toast("Profile Deleted!");
+    } else toast("Cannot delete the only profile!");
+  };
+
+  function getWheelRemainingMs() {
+    return Math.max(0, WHEEL_COOLDOWN_MS - (Date.now() - (data.lastWheelSpinTime || 0)));
+  }
+
+  function updateWheelCooldown() {
+    const remaining = getWheelRemainingMs();
+    const btn = $("spinBtn");
+    const text = $("spinCooldownText");
+    if (!btn || !text) return;
+    if (remaining <= 0) {
+      btn.disabled = false;
+      btn.style.opacity = "1";
+      text.textContent = "Available now 🎁";
+      return;
+    }
+    btn.disabled = true;
+    btn.style.opacity = "0.55";
+    const totalSeconds = Math.ceil(remaining / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    text.textContent = `Next spin in ${hours}h ${String(minutes).padStart(2,'0')}m ${String(seconds).padStart(2,'0')}s`;
+  }
+
+  // Wheel Spin Handler — once every 2 hours.
+  $("spinBtn").onclick = () => {
+    if (getWheelRemainingMs() > 0) {
+      updateWheelCooldown();
+      toast("⏳ Wheel is on cooldown. Try again later!");
+      return;
+    }
+
+    $("spinBtn").disabled = true;
+    data.lastWheelSpinTime = Date.now();
+    saveData();
+    updateWheelCooldown();
+
+    curRotation += 720 + Math.floor(Math.random() * 360);
+    $("wheelCircle").style.transform = `rotate(${curRotation}deg)`;
+
+    setTimeout(() => {
+      data.coins += 200;
+      data.gems += 10;
+      saveData();
+      toast("🎁 Won 200 Coins & 10 Gems! Next spin in 2 hours.");
+      updateWheelCooldown();
+    }, 3000);
+  };
+
+  // Season Pass Handler
+  $("unlockSeasonBtn").onclick = () => {
+    if (!data.seasonPass && data.gems >= 50) {
+      data.gems -= 50;
+      data.seasonPass = true;
+      if (!data.owned.includes("l1")) data.owned.push("l1");
+      if (!data.owned.includes("l4")) data.owned.push("l4");
+      saveData();
+      toast("Unlocked Season Pass & Creature Skins!");
+    } else if (data.seasonPass) {
+      toast("Season Pass already active!");
+    } else {
+      toast("Not enough Gems!");
+    }
+  };
+
+  $("playBtn").onclick = () => { show("game"); $("gameOverlay").style.display = "grid"; };
+  $("startBtn").onclick = start;
+  $("target").onpointerdown = e => { e.stopPropagation(); hit(); };
+  $("arena").onpointerdown = e => { if (e.target === $("arena")) wrongHit(); };
+  $("quitBtn").onclick = () => { running = false; clearInterval(timer); show("home"); renderAll(); };
+
+  document.addEventListener("click", e => {
+    const s = e.target.closest("[data-screen]"); if (s) show(s.dataset.screen);
+    const m = e.target.closest("[data-mode]"); if (m) { mode = m.dataset.mode; renderAll(); }
+    
+    // Filter Buttons
+    const f = e.target.closest("[data-filter]");
+    if (f) {
+      document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+      f.classList.add("active");
+      currentShopFilter = f.dataset.filter;
+      renderShop();
+    }
+
+    const buyPower = e.target.closest("[data-buy-power]");
+    if (buyPower) {
+      const id = buyPower.dataset.buyPower;
+      const item = powers.find(p => p.id === id);
+      data.powers = data.powers || {};
+      if (item.currency === "coins" && data.coins >= item.price) {
+        data.coins -= item.price;
+        data.powers[id] = (data.powers[id] || 0) + 1;
+        saveData();
+        toast(`${item.icon} ${item.name} purchased!`);
+      } else if (item.currency === "gems" && data.gems >= item.price) {
+        data.gems -= item.price;
+        data.powers[id] = (data.powers[id] || 0) + 1;
+        saveData();
+        toast(`${item.icon} ${item.name} purchased!`);
+      } else {
+        toast("Not enough Coins/Gems!");
+      }
+      return;
+    }
+
+    const use = e.target.closest("[data-power-use]");
+    if (use) {
+      usePower(use.dataset.powerUse);
+      return;
+    }
+
+    // Shop Item Buttons
+    const sk = e.target.closest("[data-skin]");
+    if (sk) {
+      const skinId = sk.dataset.skin;
+      const item = skins.find(x => x.id === skinId);
+      if (data.owned.includes(skinId)) {
+        data.equipped = skinId;
+        toast("Skin Equipped!");
+      } else if (item.currency === "coins" && data.coins >= item.price) {
+        data.coins -= item.price; data.owned.push(skinId); data.equipped = skinId; toast("Skin Purchased!");
+      } else if (item.currency === "gems" && data.gems >= item.price) {
+        data.gems -= item.price; data.owned.push(skinId); data.equipped = skinId; toast("Skin Purchased!");
+      } else toast("Not enough currency!");
+      saveData();
+    }
+  });
+
+  renderAll();
+});
+</script>
+</body>
+</html>
